@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hierarchical Diffusion Motion Planning</title>
+
+  <!-- Bulma CSS for styling -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              Structured-Diffuser: Diffusion with Task-Conditioned Structured Priors for Motion Planning
+            </h1>
+            <h2 class="subtitle">Under Review</h2>
+
+            <!-- ========================= Publication Links (Button Row) =========================-->
+            <div class="publication-links" style="margin-top: 20px;">
+              <span class="link-block">
+                <a href="https://drive.google.com/file/d/1PosAWF4VOeNqJc7xPET_rogh-i51AG0-/view?usp=drive_link"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/xxxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code (available soon)</span>
+                </a>
+              </span>
+              
+              <span class="link-block">
+                <a href="https://drive.google.com/file/d/1HzM4ZfO2kgXiuRJVZBLC4Kmhr-8n6No4/view?usp=drive_link"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-youtube"></i></span>
+                  <span>Video</span>
+                </a>
+              </span>
+            </div>
+            <!-- ========================= End of Button Row =========================-->
+          </div>
+      </div>
+    </div>
+  </section>
+ <!--=============================== COMING NEXT ===============================-->
+ <!-- 
+   <section class="section">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">What’s Coming Next?</h2>
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-justified is-size-6">
+          <p>We are preparing additional updates, including:</p>
+          <ul style="list-style-position: inside; text-align: left; display: inline-block;">
+            <li>Resources to better understand connections between our method and prior approaches</li>
+            <li>More tasks and demonstrations.</li>
+          </ul>
+          <p class="mt-3">Stay tuned!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ -->
+ <!--=============================== OVERVIEW ===============================-->
+   <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">Overview</h2>
+      <div class="columns is-centered">
+        <div class="column">
+          <video autoplay loop muted playsinline width="700">
+            <source src="./static/videos/website_video_v2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          
+          <blockquote class="content has-text-justified is-size-6 mt-5"> <!--is-size-5: font_size (smaller, the bigger), mt-5 : margin-->  
+We propose a novel hierarchical diffusion planner that embeds task and motion structure directly into the noise model.
+Unlike standard diffusion-based planners that rely on zero-mean, isotropic Gaussian corruption, we introduce task-conditioned structured Gaussians whose means and covariances are derived from Gaussian Process Motion Planning (GPMP), explicitly encoding trajectory smoothness and task semantics in the prior. 
+We first generalize the standard diffusion process to biased, non-isotropic corruption with closed-form forward and posterior expressions. Building on this formulation, our hierarchical design separates prior instantiation from trajectory denoising. At the upper level, the model predicts sparse, task-centric key states and their associated timings, which instantiate a structured Gaussian prior (mean and covariance). At the lower level, the full trajectory is denoised under this fixed prior, treating the upper-level outputs as noisy observations. 
+Experiments on Maze2D goal-reaching and KUKA block stacking show consistently higher success rates and smoother trajectories than isotropic baselines, achieving dataset-level smoothness substantially earlier during training. Ablation studies further show that explicitly structuring the corruption process provides benefits beyond neural conditioning the denoising network alone. Overall, our approach concentrates the prior’s probability mass near feasible and semantically meaningful trajectories. 
+	</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+ <!--=============================== RESULT ===============================-->
+  <!--========================= Maze2D Results =========================-->
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">Result -- Maze2D</h2>
+  <!------------------------------------------------------->
+  <!-------------------- motion video - horizontal compare--------------------->
+      <h3 class="title is-3.5">Motion Comparison (100k training steps)</h3>
+      <div class="columns is-centered">
+        <div class="column">
+          <video autoplay loop muted playsinline width="400">
+            <source src="./static/videos/Maze2D/traj_7_iso_100k_half_speed_online-video-cutter.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser) </p>
+        </div>
+        <div class="column">
+          <video autoplay loop muted playsinline width="400">
+            <source src="./static/videos/Maze2D/traj_7_GPMP_100k_half_speed_online-video-cutter.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Ours</p>
+        </div>
+      </div>
+  <!-------------------- motion video - vertical compare--------------------->
+      <!--------- isotropic ---------->
+      <div class="columns is-centered">
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_8_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_16_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_12_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      <p class = " is-size-5">Isotropic Gaussian Baseline (Diffuser)</p>
+      <!----------- ours ------------>
+      <div class="columns is-centered">
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_8_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_16_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="column">
+          <video controls width="300">
+            <source src="./static/videos/Maze2D/traj_12_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      <p class = " is-size-5">Ours</p>
+      <!-------------------- denoising video --------------------->
+      <h3 class="title is-3.5 mt-3">Denoising Process Comparison</h3>
+      <!----------- denoising: isotropic ------------->
+      <div class="columns is-centered">
+        <div class="column">
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_7_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_8_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_13_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_15_iso_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
+      <!----------- denoising: ours ------------->
+      <div class="columns is-centered">
+        <div class="column">
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_7_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_8_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_13_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls width="230">
+            <source src="./static/videos/Maze2D/chain_15_GPMP_100k.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      <p class = " is-size-5 mt-3">Ours</p>
+    <!------------------------------------------------------->
+    </div>
+  </section>
+  
+
+  <!--========================= KUKA Results =========================-->
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">Result -- KUKA Block Stacking</h2>
+      <!------------------- Motion --------------------->
+      <h3 class="title is-3.5">Motion Comparison (100k training steps)</h3>
+      <!----------- Task1 ------------->
+      <div class="columns is-centered">
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/iso-100k-49.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
+        </div>
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/GPMP-100k-49.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Ours</p>
+        </div>
+      </div>
+      
+      <!----------- Task2 ------------->
+      <div class="columns is-centered">
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/iso-100k-64.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
+        </div>
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/GPMP-100k-64.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Ours</p>
+        </div>
+      </div>
+      <!----------------Denoising------->
+      <h3 class="title is-3.5">Denoising Process Comparison</h3>
+      <div class="columns is-centered">
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/chain0_isotropic.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
+        </div>
+        <div class="column">
+          <video autoplay loop muted playsinline width="450">
+            <source src="./static/videos/KUKA/chain0_ours.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class = " is-size-5 mt-3">Ours</p>
+        </div>
+      </div>
+     
+    </div>
+  </section>
+
+    <footer class="footer">
+    <div class="content has-text-centered">
+      <p class = " is-size-5 mt-3"> This website is built using the open-source  <a href="https://nerfies.github.io/">Nerfies</a> template.</p>
+    </div>
+  </footer>
+  
+  <!--======================================== SCRIPT ========================================-->
+  <script>
+    document.querySelectorAll("video").forEach(video => {
+      // Remove default "loop" attribute if present
+      video.removeAttribute("loop");
+
+      // Ensure autoplay/muted/playsinline are always set
+      video.setAttribute("autoplay", true);
+      video.setAttribute("muted", true);
+      video.setAttribute("playsinline", true);
+
+      // Add event listener for custom delayed looping
+      video.addEventListener("ended", () => {
+        setTimeout(() => {
+          video.currentTime = 0;
+          video.play();
+        }, 1000); // pause for 1s
+      });
+    });
+  </script>
+  <!--==========================================================================================-->
+</body>
+</html>
+
