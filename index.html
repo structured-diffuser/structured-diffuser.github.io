@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <div class="container is-max-widescreen has-text-centered">
+    <!-- <div class="container is-max-widescreen has-text-centered">
 
       <video autoplay loop muted playsinline controls width="960">
         <source src="./static/videos_icra/video-submission-SD-modified.mp4" type="video/mp4">
@@ -77,7 +77,7 @@
         trajectory by reverse diffusion from N (ξ, K).
         </p>
       </blockquote>
-    </div>
+    </div> -->
 
 
   </section>
@@ -103,17 +103,17 @@
  -->
  <!--=============================== OVERVIEW ===============================-->
    <section class="section">
-    <!-- <div class="container is-max-widescreen has-text-centered">
+    <div class="container is-max-widescreen has-text-centered pb-6">
 
       <video autoplay loop muted playsinline controls width="960">
         <source src="./static/videos_icra/video-submission-SD-modified.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
 
-
       <blockquote class="content has-text-justified is-size-6 mt-5"> 
         <p>
-        Input: task goal and initial conditions. Upper level produces Y and C for the sparse
+        Our pipeline takes task goal and initial conditions as input. 
+        The upper level produces Y and C for the sparse
         key constraints C · τ = Y , using task-specific learned predictors, 
         model-based components, and/or simple rules. (e.g., if
         the constraints are simple sparse waypoints, Y is a stack of key states 
@@ -124,11 +124,8 @@
         trajectory by reverse diffusion from N (ξ, K).
         </p>
       </blockquote>
-    </div> -->
+    </div>
 
-    <!-- </section>
-
-    <section class="section"> -->
 
     <div class="container is-max-desktop has-text-centered mt-6">
       <hr>
@@ -283,7 +280,7 @@
         
       </div>
 
-      <img width="800" src="static/images_icra/traj_compare_g1_wide_legend.png">
+      <img width="815" src="static/images_icra/traj_compare_g1_wide_legend.png">
 
     </div>
 
@@ -296,10 +293,10 @@
         We deploy the planner on a physical robot equipped with 
         an Inspire hand. 
 
-        For quantitative evaluation, we test 16 designated object
-        locations on a 4 × 4 grid. 
-        For qualitative evaluations, we use both hands to pick up various 
-        different objects placed randomly.
+        For quantitative evaluation, the robot picks up a cube with its left hand, 
+        we test 16 designated object locations on a 4 × 4 grid. 
+        For qualitative evaluations, we use both hands to pick up randomly-placed 
+        objects of different shapes and rigidity.
         </p>
         <p>
         With the low-level diffuser trained entirely in simulation and the high-level 
@@ -662,35 +659,17 @@
     </div>
 
     <div class="container is-max-widescreen has-text-centered">
-      <h4 class="title is-5">Diffuser (Isotropic)</h4>
-      <!-- video, vx, vy -->
-      <div>
-        <video autoplay loop muted playsinline width="230">
-          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_isotropic.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <img width="450" src="static/images_icra/vx_iso.png">
-        <img width="450" src="static/images_icra/vy_iso.png">
-      </div>
-
-
-      <h4 class="title is-5">Structured-Diffuser (Ours)</h4>
-      <!-- video, vx, vy -->
-      <div>
-        <video autoplay loop muted playsinline width="230">
-          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_ours.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <img width="450" src="static/images_icra/vx_ours.png">
-        <img width="450" src="static/images_icra/vy_ours.png">
-      </div>
-
+      <video autoplay loop muted playsinline width="1080">
+        <source src="./static/videos_icra/maze2d_scene24_velocity.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
       <hr class="mt-6">
-      </div>
+    </div>
 
-      <div class="container is-max-widescreen has-text-left">
-        <h3 class="title is-4 mt-3">Data Efficiency</h3>
-        <blockquote class="content has-text-justified is-size-6 mb-6">
+    <div class="container is-max-widescreen has-text-left">
+      <h3 class="title is-4 mt-3">Data Efficiency</h3>
+      <blockquote class="content has-text-justified is-size-6 mb-6">
+        <p>
           We compare three planners against our model: 
           <ol>
             <li>
@@ -709,16 +688,19 @@
               ference time by model-based costs.
             </li>
           </ol>
+        </p>
+        <p>
           Among all methods, Structured-Diffuser achieves the highest mean success 
           rate on G1. With less training data, the gap widens: 
           using 27 demonstrations, Structured-Diffuser retains 68.6% compared with 
           58.0% for KeyCond.
-        </blockquote>
-      </div>
+        </p>
+      </blockquote>
+    </div>
 
-      <div class="container is-max-widescreen has-text-centered">
-        <img width="750" src="static/images_icra/fig_data_efficiency.png">
-      </div>
+    <div class="container is-max-widescreen has-text-centered">
+      <img width="750" src="static/images_icra/fig_data_efficiency.png">
+    </div>
 
   </section>
 
