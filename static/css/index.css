@@ -155,3 +155,16 @@ body {
 #interpolation-image-wrapper img {
   border-radius: 5px;
 }
+
+
+.abstract-blockquote {
+  max-width: 800px;
+  margin: 1.5rem auto 0;
+}
+
+.video-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

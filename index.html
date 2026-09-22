@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hierarchical Diffusion Motion Planning</title>
+  <title>Structured-Diffuser</title>
 
   <!-- Bulma CSS for styling -->
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -17,7 +17,7 @@
 
   <section class="hero">
     <div class="hero-body">
-      <div class="container is-max-desktop">
+      <div class="container is-max-widescreen">
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">
@@ -28,7 +28,7 @@
             <!-- ========================= Publication Links (Button Row) =========================-->
             <div class="publication-links" style="margin-top: 20px;">
               <span class="link-block">
-                <a href="https://drive.google.com/file/d/1PosAWF4VOeNqJc7xPET_rogh-i51AG0-/view?usp=drive_link"
+                <a href="https://drive.google.com/file/d/1U4fQ9if-pQw89ywYqgnqwcT92uAdlnDN/view?usp=sharing"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
@@ -55,6 +55,40 @@
           </div>
       </div>
     </div>
+
+    <div class="container is-max-widescreen has-text-centered">
+
+      <!-- <video autoplay loop muted playsinline controls width="960">
+        <source src="./static/videos_icra/video-submission-SD-modified.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video> -->
+
+      Temporarily use the old video, since I still need to edit the new one!
+      
+      <video autoplay loop muted playsinline controls width="960">
+        <source src="./static/videos/website_video_v2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+
+
+      <blockquote class="content has-text-justified is-size-6 mt-5"> 
+        <p>
+        Our pipeline takes task goal and initial conditions as input. 
+        The upper level produces Y and C for the sparse
+        key constraints C · τ = Y , using task-specific learned predictors, 
+        model-based components, and/or simple rules. (e.g., if
+        the constraints are simple sparse waypoints, Y is a stack of key states 
+        and C is a selection matrix, which corresponds to
+        designation of timings for the key states.) With (Y, C), we construct a 
+        Gaussian prior by conditioning a GP over trajectories,
+        yielding (ξ, K). The lower level then generates the full 
+        trajectory by reverse diffusion from N (ξ, K).
+        </p>
+      </blockquote>
+    </div>
+
+
   </section>
  <!--=============================== COMING NEXT ===============================-->
  <!-- 
@@ -78,209 +112,626 @@
  -->
  <!--=============================== OVERVIEW ===============================-->
    <section class="section">
-    <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-3">Overview</h2>
-      <div class="columns is-centered">
-        <div class="column">
-          <video autoplay loop muted playsinline width="700">
-            <source src="./static/videos/website_video_v2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          
-          <blockquote class="content has-text-justified is-size-6 mt-5"> <!--is-size-5: font_size (smaller, the bigger), mt-5 : margin-->  
-We propose a novel hierarchical diffusion planner that embeds task and motion structure directly into the noise model.
-Unlike standard diffusion-based planners that rely on zero-mean, isotropic Gaussian corruption, we introduce task-conditioned structured Gaussians whose means and covariances are derived from Gaussian Process Motion Planning (GPMP), explicitly encoding trajectory smoothness and task semantics in the prior. 
-We first generalize the standard diffusion process to biased, non-isotropic corruption with closed-form forward and posterior expressions. Building on this formulation, our hierarchical design separates prior instantiation from trajectory denoising. At the upper level, the model predicts sparse, task-centric key states and their associated timings, which instantiate a structured Gaussian prior (mean and covariance). At the lower level, the full trajectory is denoised under this fixed prior, treating the upper-level outputs as noisy observations. 
-Experiments on Maze2D goal-reaching and KUKA block stacking show consistently higher success rates and smoother trajectories than isotropic baselines, achieving dataset-level smoothness substantially earlier during training. Ablation studies further show that explicitly structuring the corruption process provides benefits beyond neural conditioning the denoising network alone. Overall, our approach concentrates the prior’s probability mass near feasible and semantically meaningful trajectories. 
-	</blockquote>
-        </div>
-      </div>
+    <!-- <div class="container is-max-widescreen has-text-centered">
+
+      <video autoplay loop muted playsinline controls width="960">
+        <source src="./static/videos_icra/video-submission-SD-modified.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+
+      <blockquote class="content has-text-justified is-size-6 mt-5"> 
+        <p>
+        Input: task goal and initial conditions. Upper level produces Y and C for the sparse
+        key constraints C · τ = Y , using task-specific learned predictors, 
+        model-based components, and/or simple rules. (e.g., if
+        the constraints are simple sparse waypoints, Y is a stack of key states 
+        and C is a selection matrix, which corresponds to
+        designation of timings for the key states.) With (Y, C), we construct a 
+        Gaussian prior by conditioning a GP over trajectories,
+        yielding (ξ, K). The lower level then generates the full 
+        trajectory by reverse diffusion from N (ξ, K).
+        </p>
+      </blockquote>
+    </div> -->
+
+    <!-- </section>
+
+    <section class="section"> -->
+
+    <div class="container is-max-desktop has-text-centered mt-6">
+      <hr>
+      <h2 class="title is-3">Abstract</h2>
+      <hr>
+      <blockquote class="content has-text-justified is-size-6 mt-5 abstract-blockquote"> 
+        <!--is-size-5: font_size (smaller, the bigger), mt-5 : margin-->  
+        <p>
+        We propose a novel hierarchical diffusion planner that embeds task and 
+        motion structure directly in the noise model. Unlike standard 
+        diffusion-based planners that use zero-mean, isotropic Gaussian noise, 
+        we employ a family of task-conditioned structured Gaussians whose means 
+        and covariances are derived from Gaussian Process Motion Planning (GPMP): 
+        sparse, task-centric key states or their associated timings (or both) 
+        are treated as noisy observations to produce a prior instance. 
+        We first generalize the standard diffusion process to biased, 
+        non-isotropic corruption with closed-form forward and posterior expressions. 
+        Building on this, our hierarchy separates prior instantiation from 
+        trajectory denoising: the upper level instantiates a task-conditioned 
+        structured Gaussian (mean and covariance), and the lower level denoises 
+        the full trajectory under that fixed prior. 
+        Experiments on Maze2D goal-reaching and KUKA block stacking show improved 
+        success rates, smoother trajectories, and stronger task alignment compared 
+        to isotropic baselines. Ablation studies indicate that explicitly structuring 
+        the corruption process offers benefits beyond simply conditioning the neural network. 
+        Overall, our method concentrates probability mass of prior near feasible, 
+        smooth, and semantically meaningful trajectories while maintaining tractability.
+        </p>
+      </blockquote>
+
     </div>
   </section>
  <!--=============================== RESULT ===============================-->
-  <!--========================= Maze2D Results =========================-->
-  <section class="section">
-    <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-3">Result -- Maze2D</h2>
-  <!------------------------------------------------------->
-  <!-------------------- motion video - horizontal compare--------------------->
-      <h3 class="title is-3.5">Motion Comparison (100k training steps)</h3>
-      <div class="columns is-centered">
-        <div class="column">
-          <video autoplay loop muted playsinline width="400">
-            <source src="./static/videos/Maze2D/traj_7_iso_100k_half_speed_online-video-cutter.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser) </p>
-        </div>
-        <div class="column">
-          <video autoplay loop muted playsinline width="400">
-            <source src="./static/videos/Maze2D/traj_7_GPMP_100k_half_speed_online-video-cutter.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Ours</p>
-        </div>
-      </div>
-  <!-------------------- motion video - vertical compare--------------------->
-      <!--------- isotropic ---------->
-      <div class="columns is-centered">
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_8_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_16_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_12_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-      <p class = " is-size-5">Isotropic Gaussian Baseline (Diffuser)</p>
-      <!----------- ours ------------>
-      <div class="columns is-centered">
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_8_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_16_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="column">
-          <video controls width="300">
-            <source src="./static/videos/Maze2D/traj_12_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-      <p class = " is-size-5">Ours</p>
-      <!-------------------- denoising video --------------------->
-      <h3 class="title is-3.5 mt-3">Denoising Process Comparison</h3>
-      <!----------- denoising: isotropic ------------->
-      <div class="columns is-centered">
-        <div class="column">
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_7_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_8_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_13_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_15_iso_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-      <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
-      <!----------- denoising: ours ------------->
-      <div class="columns is-centered">
-        <div class="column">
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_7_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_8_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_13_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <video controls width="230">
-            <source src="./static/videos/Maze2D/chain_15_GPMP_100k.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-      <p class = " is-size-5 mt-3">Ours</p>
-    <!------------------------------------------------------->
-    </div>
-  </section>
-  
 
+  <section class="section">
+    <div class="container is-max-widescreen has-text-left">
+      <hr>
+      <h2 class="title is-3">Results - G1 Object-in-box</h2>
+      <p>
+      The G1 humanoid grasps an object and places it inside a target
+      box. The trajectory state consists of 7-DoF left-arm joint 
+      positions and a hand grasping fraction. The key-state stack 
+      Y contains the initial, grasp, and release configurations. We 
+      train an MLP-based inverse-kinematics (IK) predictor for the 
+      grasp and release joint configurations, and another MLP to 
+      predict their timings for constructing C. The dataset consists 
+      of 219 successful Finite State Machine-generated trajectories 
+      collected in Isaac Sim. 
+      Simulation evaluations randomize start-goal pairs for 
+      Maze2D, initial joint configurations and block layouts for 
+      KUKA, and object/box poses and initial arm configurations 
+      for G1.
+      </p>
+      <hr>
+
+      <h4 class="title is-4">Denoising Process Comparison</h4>
+      <!-- 2 models in a row here -->
+      <!-- <p class="mb-4"> -->
+      <blockquote class="content has-text-justified is-size-6 mb-4">
+        Isotropic Gaussian prior spreads probability mass
+        broadly, while our structured prior concentrates it
+        around task-relevant trajectory regions.
+      </blockquote>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <h4 class="title is-5 mt-6">Diffuser (Isotropic)</h4>
+      <!-- <p class = " is-size-5 mt-6 mb-4">Diffuser (Isotropic)</p> -->
+      <div class="video-row">
+      <!-- <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;"> -->
+                <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_iso_fig1_layout.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_iso_inst1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_iso_inst2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <h4 class="title is-5 mt-5">Structured-Diffuser (Ours)</h4>
+      <!-- <p class = " is-size-5 mt-5 mb-4"><b>Structured-Diffuser (Ours)</b></p> -->
+      <div class="video-row mb-4">
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_ours_fig1_layout.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_ours_inst1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/denosing/denoising_ours_inst2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        
+      </div>
+    </div>
+
+    <div class="container is-max-widescreen has-text-left">
+      <hr class="mt-6">
+
+      <h4 class="title is-4">Motion Comparison</h4>
+      <!-- 2 models in a row here -->
+      <!-- <p class="mb-4"> -->
+      <blockquote class="content has-text-justified is-size-6 mb-6">
+        Our method concentrates trajectories near the object
+        during grasping and near the box during release, resulting in fewer failures. 
+        We attribute these gains to the structured prior, which concentrates
+        probability mass around task-critical regions through soft 
+        GP conditioning.
+      </blockquote>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <h4 class="title is-5 mt-6">Diffuser (Isotropic)</h4>
+      <!-- <p class = " is-size-5 mt-6 mb-4">Diffuser (Isotropic)</p> -->
+      <div class="video-row">
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_iso_smooth_fig1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_iso_smooth_inst1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_iso_smooth_inst2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <h4 class="title is-5 mt-5">Structured-Diffuser (Ours)</h4>
+      <!-- <p class = " is-size-5 mt-5 mb-4"><b>Structured-Diffuser (Ours)</b></p> -->
+      <div class="video-row mb-6">
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_ours_smooth_fig1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_ours_smooth_inst1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay muted playsinline width="250">
+          <source src="./static/videos_icra/g1/motions/execution_ours_smooth_inst2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        
+      </div>
+
+      <img width="800" src="static/images_icra/traj_compare_g1_wide_legend.png">
+
+    </div>
+
+    <div class="container is-max-widescreen has-text-left">
+      <hr class="mt-6">
+
+      <h4 class="title is-4">Hardware rollout</h4>
+      <blockquote class="content has-text-justified is-size-6 mb-5">
+        <p>
+        We deploy the planner on a physical robot equipped with 
+        an Inspire hand. 
+
+        For quantitative evaluation, we test 16 designated object
+        locations on a 4 × 4 grid. 
+        For qualitative evaluations, we use both hands to pick up various 
+        different objects placed randomly.
+        </p>
+        <p>
+        With the low-level diffuser trained entirely in simulation and the high-level 
+        keystate predictor fine-tuned on less than 20 hardware configurations, 
+        success rate (SR) of Structured-Diffuser is stably higher than Isotropic prior.
+        </p>
+
+      </blockquote>
+    </div>
+
+    <!-- the camera videos are shrinked using the command: -->
+    <!-- for i in *.mp4; do ffmpeg -i "$i" -vf "scale=480:-2" -c:a copy "480p_${i%.*}.mp4"; done -->
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <!-- full dataset, partial dataset in a row, each has 2 model outputs -->
+      <!-- is-6: wide gap BETWEEN groups; is-narrow: each group shrinks to fit its videos -->
+      <!-- <div class="columns is-variable is-6 is-centered is-multiline is-narrow"> -->
+      <div class="columns is-variable is-6 is-centered is-multiline is-narrow">
+
+        <!-- ===== Partial dataset (left half) ===== -->
+        <div class="column is-narrow">
+          <h5 class="title is-5 has-text-centered">63 Training Trajectories</h5>
+          <!-- <hr> -->
+          <!-- is-1: small gap WITHIN a group -->
+          <div class="columns is-variable is-1">
+            <!-- iso -->
+            <div class="column is-narrow has-text-centered">
+              <!-- <p class = " is-size-5 mt-3">ISO: 3/16</p> -->
+              <p class = " is-size-5 mb-3">ISO: 3/16 SR</p>
+              <video data-sync="hardware" autoplay muted playsinline controls width="270">
+                <source src="./static/videos_icra/g1_hardware/480p_partial_iso_8x.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <!-- ours -->
+            <div class="column is-narrow has-text-centered">
+              <!-- <p class = " is-size-5 mt-3"><b>Ours: 8/16</b></p> -->
+              <p class = " is-size-5 mb-3"><b>Ours: 8/16 SR</b></p>
+              <video data-sync="hardware" autoplay muted playsinline controls width="270">
+                <source src="./static/videos_icra/g1_hardware/480p_partial_ours_8x.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- vertical divider between the two halves -->
+        <!-- <div class="column is-narrow" style="border-left: 2px solid #dbdbdb;"></div> -->
+        <!-- <div class="column is-narrow"></div> -->
+
+        <!-- ===== Full dataset (right half) ===== -->
+        <div class="column is-narrow">
+          <h5 class="title is-5 has-text-centered">200 Training Trajectories</h5>
+          <div class="columns is-variable is-1">
+            <!-- iso -->
+            <div class="column is-narrow has-text-centered">
+              <p class = " is-size-5 mb-3">ISO: 10/16 SR</p>
+              <video data-sync="hardware" autoplay muted playsinline controls width="270">
+                <source src="./static/videos_icra/g1_hardware/480p_full_iso_8x.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <!-- ours -->
+            <div class="column is-narrow has-text-centered">
+              <p class = " is-size-5 mb-3"><b>Ours: 15/16 SR</b></p>
+              <video data-sync="hardware" autoplay muted playsinline controls width="270">
+                <source src="./static/videos_icra/g1_hardware/480p_full_ours_8x.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    
+    <h5 class="title is-5 has-text-centered mt-5">Picking Various Objects with Both Arms</h5>
+
+    <div class="container is-max-widescreen has-text-centered">
+      <!-- full dataset, partial dataset in a row, each has 2 model outputs -->
+      <!-- is-6: wide gap BETWEEN groups; is-narrow: each group shrinks to fit its videos -->
+      <!-- <div class="columns is-variable is-6 is-centered is-multiline is-narrow"> -->
+      <div class="columns is-variable is-2 is-centered is-multiline is-narrow">
+
+        <div class="column is-narrow">
+            <video data-sync="bimanual" autoplay muted playsinline controls width="275">
+              <source src="./static/videos_icra/g1_hardware/480p_bimanual_4x_label_only.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="column is-narrow">
+            <video data-sync="bimanual" autoplay muted playsinline controls width="644">
+              <source src="./static/videos_icra/g1_hardware/bimanual_robot_camera_4x.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+        </div>
+      </div>
+
+
+
+
+  </section>
+
+  
   <!--========================= KUKA Results =========================-->
   <section class="section">
-    <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-3">Result -- KUKA Block Stacking</h2>
-      <!------------------- Motion --------------------->
-      <h3 class="title is-3.5">Motion Comparison (100k training steps)</h3>
-      <!----------- Task1 ------------->
-      <div class="columns is-centered">
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/iso-100k-49.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
-        </div>
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/GPMP-100k-49.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Ours</p>
-        </div>
+    <div class="container is-max-widescreen has-text-left">
+      <hr>
+      <h2 class="title is-3">Results - KUKA Block Stacking</h2>
+      <p>
+        The task is to grasp and 
+        stack blocks with a 7-DoF KUKA arm. The Diffuser benchmark provides 
+        joint-position trajectories, per-block binary 
+        contact flags, and block-position trajectories. Since block 
+        positions are determined from kinematics and contact, we 
+        train the models only on joint trajectories and contact flags. 
+        The key-state stack Y contains the initial, grasp, and release 
+        joint configurations, while their corresponding indices define 
+        C. A lightweight upper-level diffusion model predicts the 
+        contact-flag trajectory, from which grasp and release timings 
+        are extracted to construct C. For Y , we use the grasp and 
+        release joint configurations from the reference trajectory for 
+        each evaluation scene. Thus only the timings are predicted 
+        in this task, and Diffuser + KeyCond receives the same Y. 
+        At test time, the grasp target is the currently grasped block 
+        if any, or otherwise the block nearest the initial end-effector 
+        position. The release target is the highest remaining block.
+      </p>
+      <hr>
+    <!------------------------------------------------------->
+      <!-- denoising -->
+      <h3 class="title is-4 mt-3">Denoising Process Comparison</h3>
+      <p class="mb-5">
+        Our prior rapidly converges to joint trajectories that result in 
+        smooth end effector motion, passing through the pick and place goals.
+      </p>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <h4 class="title is-5">Diffuser (Isotropic)</h4>
+      <!-- <p class = " is-size-5 mt-6 mb-4">Diffuser (Isotropic)</p> -->
+      <div class="video-row">
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene102_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene104_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene20_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
       
-      <!----------- Task2 ------------->
-      <div class="columns is-centered">
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/iso-100k-64.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
-        </div>
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/GPMP-100k-64.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Ours</p>
-        </div>
+      <!-- gpmp row: maze7 maze8; kuka -->
+      <h4 class="title is-5 mt-5">Structured-Diffuser (Ours)</h4>
+      <!-- <p class = " is-size-5 mt-5 mb-4"><b>Structured-Diffuser (Ours)</b></p> -->
+      <div class="video-row">
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene102_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene104_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/denoising/kuka_denoising_scene20_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
-      <!----------------Denoising------->
-      <h3 class="title is-3.5">Denoising Process Comparison</h3>
-      <div class="columns is-centered">
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/chain0_isotropic.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Isotropic Gaussian Baseline (Diffuser)</p>
-        </div>
-        <div class="column">
-          <video autoplay loop muted playsinline width="450">
-            <source src="./static/videos/KUKA/chain0_ours.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p class = " is-size-5 mt-3">Ours</p>
-        </div>
-      </div>
-     
+
+      <hr class="mt-6">
     </div>
+    
+    <div class="container is-max-widescreen has-text-left">
+      <!-------------------- motion video - horizontal compare--------------------->
+      <h3 class="title is-4 mt-3">Motion Comparison</h3>
+      <p class ="mb-5">
+        Our method has more successful final block stacks and less arm jitter, verified by kinematic replay of the 
+        generated trajectories.
+      </p>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <!-- isotropic row: maze7 maze8; kuka1 kuka2 -->
+      <h4 class="title is-5">Diffuser (Isotropic)</h4>
+      <div class="video-row">
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene102_motion_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene104_motion_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene20_motion_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- gpmp row: maze1 maze2; kuka1 kuka2 -->
+      <h4 class="title is-5 mt-5">Structured-Diffuser (Ours)</h4>
+      <div class="video-row">
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene102_motion_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene104_motion_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250">
+          <source src="./static/videos_icra/kuka/motions/kuka_scene20_motion_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
   </section>
 
-    <footer class="footer">
+
+  
+  <!--========================= Maze2D Results =========================-->
+  <section class="section">
+    <div class="container is-max-widescreen has-text-left">
+      <hr>
+      <h2 class="title is-3">Results - Maze2D</h2>
+      <p>
+        Each task specifies a start and 
+        goal state on a fixed maze. Key states are defined as evenly 
+        spaced temporal waypoints between them, so C is fixed 
+        by design because the waypoint timings are predetermined.
+        The upper-level key-state predictor is a lightweight diffusion 
+        model trained to generate the waypoint set Y at the fixed 
+        timings C.
+      </p>
+      <hr>
+    <!------------------------------------------------------->
+      <!-- denoising -->
+      <h3 class="title is-4 mt-3">Denoising Process Comparison</h3>
+      <p class="mb-5">
+        Our prior rapidly converges to smooth, goal-reaching trajectories.
+      </p>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      <div>
+        <h4 class="title is-5">Diffuser (Isotropic)</h4>
+          <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+            <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene7_isotropic.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+            <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene84_isotropic.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+            <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene90_isotropic.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+            <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene97_isotropic.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+      </div>
+
+      <div>
+        <h4 class="title is-5 mt-5">Structured-Diffuser (Ours)</h4>
+        <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+          <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene7_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+          <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene84_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;" >
+          <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene90_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="250" style="margin: 0 1rem;">
+          <source src="./static/videos_icra/maze2d/denoising/maze2d_denoising_scene97_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <hr class="mt-6">
+    </div>
+    
+    <div class="container is-max-widescreen has-text-left">
+      <!-------------------- motion video - horizontal compare--------------------->
+      <h3 class="title is-4 mt-3">Motion Comparison</h3>
+      <p class ="mb-5">
+        Our method results in significantly straighter trajectories and 
+        fewer collisions.
+      </p>
+    </div>
+    
+    <div class="container is-max-widescreen has-text-centered">
+      
+      <div>
+        <h4 class="title is-5">Diffuser (Isotropic)</h4>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene7_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene90_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene97_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div>
+        <h4 class="title is-5">Structured-Diffuser (Ours)</h4>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene7_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene90_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <video autoplay loop muted playsinline width="280">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene97_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+  </section>
+  
+  <section class="section">
+    <div class="container is-max-widescreen has-text-left">
+      <hr>
+      <h2 class="title is-3">Results - Interstate Consistency & Data Efficiency</h2>
+      <!-- <p>
+        We also evaluate our method on Maze2D goal reaching and KUKA block stacking from the Diffuser benchmarks.
+      </p> -->
+      <hr>
+      <h3 class="title is-4 mt-3">Maze2D Velocity Consistency</h3>
+      <!-- TODO get larger figures -->
+      <blockquote class="content has-text-justified is-size-6 mb-4">
+        Structured-Diffuser generates smooth trajectories more consistently. This behavior
+        is encouraged by LTV-GP-based covariance, which encodes
+        temporal dependencies across trajectory states.
+      </blockquote>
+    </div>
+
+    <div class="container is-max-widescreen has-text-centered">
+      <h4 class="title is-5">Diffuser (Isotropic)</h4>
+      <!-- video, vx, vy -->
+      <div>
+        <video autoplay loop muted playsinline width="230">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_isotropic.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img width="450" src="static/images_icra/vx_iso.png">
+        <img width="450" src="static/images_icra/vy_iso.png">
+      </div>
+
+
+      <h4 class="title is-5">Structured-Diffuser (Ours)</h4>
+      <!-- video, vx, vy -->
+      <div>
+        <video autoplay loop muted playsinline width="230">
+          <source src="./static/videos_icra/maze2d/motion/maze2d_motion_scene84_ours.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img width="450" src="static/images_icra/vx_ours.png">
+        <img width="450" src="static/images_icra/vy_ours.png">
+      </div>
+
+      <hr class="mt-6">
+      </div>
+
+      <div class="container is-max-widescreen has-text-left">
+        <h3 class="title is-4 mt-3">Data Efficiency</h3>
+        <blockquote class="content has-text-justified is-size-6 mb-6">
+          We compare three planners against our model: 
+          <ol>
+            <li>
+              <b>The baseline Diffuser</b>, which uses
+              isotropic Gaussian noise and conditions only on task inputs
+              such as initial and goal states.
+            </li>
+            <li> 
+              <b>Diffuser + KeyCond</b>. A hierarchical variant of Diffuser 
+              where the lower-level diffusion is conditioned on key
+              states and their timings produced by the upper level, while
+              still using isotropic Gaussian noise.
+            </li>
+            <li>
+              <b>EDMP</b>. A single-level Diffuser guided at in-
+              ference time by model-based costs.
+            </li>
+          </ol>
+          Among all methods, Structured-Diffuser achieves the highest mean success 
+          rate on G1. With less training data, the gap widens: 
+          using 27 demonstrations, Structured-Diffuser retains 68.6% compared with 
+          58.0% for KeyCond.
+        </blockquote>
+      </div>
+
+      <div class="container is-max-widescreen has-text-centered">
+        <img width="750" src="static/images_icra/fig_data_efficiency.png">
+      </div>
+
+  </section>
+
+  <footer class="footer">
     <div class="content has-text-centered">
       <p class = " is-size-5 mt-3"> This website is built using the open-source  <a href="https://nerfies.github.io/">Nerfies</a> template.</p>
     </div>
@@ -288,21 +739,131 @@ Experiments on Maze2D goal-reaching and KUKA block stacking show consistently hi
   
   <!--======================================== SCRIPT ========================================-->
   <script>
-    document.querySelectorAll("video").forEach(video => {
-      // Remove default "loop" attribute if present
-      video.removeAttribute("loop");
+    // Videos with controls (hardware rollouts, overview) loop on their own,
+    // except those with data-sync, which are handled by the script below.
+    // All other videos in the same .container (isotropic + ours rows) start
+    // together and restart together once every one of them has ended.
+    const groups = new Map();
+    document.querySelectorAll("video:not([data-sync])").forEach(video => {
+      video.muted = true;
+      video.playsInline = true;
+      if (video.hasAttribute("controls")) {
+        video.loop = true;
+        video.play().catch(() => {});
+        return;
+      }
+      video.loop = false;
+      video.autoplay = false;
+      video.pause();
+      const key = video.closest(".container") || document.body;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(video);
+    });
 
-      // Ensure autoplay/muted/playsinline are always set
-      video.setAttribute("autoplay", true);
-      video.setAttribute("muted", true);
-      video.setAttribute("playsinline", true);
+    groups.forEach(all => {
+      let videos = all;  // shrinks if a video fails to load
+      let pending = new Set(videos);
+      let started = false;
 
-      // Add event listener for custom delayed looping
-      video.addEventListener("ended", () => {
-        setTimeout(() => {
-          video.currentTime = 0;
-          video.play();
-        }, 1000); // pause for 1s
+      const restart = () => {
+        started = true;
+        pending = new Set(videos);
+        videos.forEach(v => {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        });
+      };
+      // Resolve one video: start the group once every video can play, and
+      // restart it once every video has ended (the longest sets the period).
+      const settle = v => {
+        pending.delete(v);
+        if (pending.size === 0) restart();
+      };
+
+      all.forEach(v => {
+        if (v.readyState >= 3) settle(v);
+        else v.addEventListener("canplay", () => { if (!started) settle(v); }, { once: true });
+        v.addEventListener("ended", () => settle(v));
+        // A video that fails to load must not stall the rest of its group.
+        const src = v.querySelector("source:last-of-type") || v;
+        src.addEventListener("error", () => {
+          videos = videos.filter(x => x !== v);
+          settle(v);
+        }, { once: true });
+      });
+    });
+  </script>
+
+  <script>
+    // Videos sharing a data-sync value (the hardware rollouts) start together,
+    // restart together once the longest one has ended, and mirror each
+    // other's play / pause / seek from the controls.
+    const syncGroups = new Map();
+    document.querySelectorAll("video[data-sync]").forEach(v => {
+      v.muted = true;
+      v.playsInline = true;
+      v.loop = false;
+      v.autoplay = false;
+      v.pause();
+      const key = v.dataset.sync;
+      if (!syncGroups.has(key)) syncGroups.set(key, []);
+      syncGroups.get(key).push(v);
+    });
+
+    syncGroups.forEach(all => {
+      let videos = all;  // shrinks if a video fails to load
+      let pending = new Set(videos);
+      let started = false;
+
+      const seekAll = t => {
+        pending = new Set(videos);
+        videos.forEach(v => {
+          // Shorter videos hold their last frame until the longest one ends.
+          v.currentTime = Math.min(t, v.duration || t);
+          if (v.currentTime < v.duration) pending.add(v); else pending.delete(v);
+        });
+      };
+      const playAll = () => videos.forEach(v => { if (!v.ended) v.play().catch(() => {}); });
+      const restart = () => {
+        started = true;
+        seekAll(0);
+        playAll();
+      };
+      const settle = v => {
+        pending.delete(v);
+        if (pending.size === 0) restart();
+      };
+
+      all.forEach(v => {
+        if (v.readyState >= 3) settle(v);
+        else v.addEventListener("canplay", () => { if (!started) settle(v); }, { once: true });
+        v.addEventListener("ended", () => settle(v));
+        const src = v.querySelector("source:last-of-type") || v;
+        src.addEventListener("error", () => {
+          videos = videos.filter(x => x !== v);
+          settle(v);
+        }, { once: true });
+
+        // Mirror user interaction. Each handler only acts when another video
+        // is out of step, so the events it triggers do not echo back.
+        v.addEventListener("play", () => {
+          if (started && videos.some(x => x.paused && !x.ended)) playAll();
+        });
+        v.addEventListener("pause", () => {
+          // The browser also fires "pause" when a video reaches its end.
+          if (v.ended || !started) return;
+          videos.forEach(x => { if (!x.paused) x.pause(); });
+        });
+
+        // v.addEventListener("seeking", () => {
+        //   if (!started) return;
+        //   const t = v.currentTime;
+        //   if (videos.some(x => Math.abs(x.currentTime - Math.min(t, x.duration)) > 0.3)) {
+        //     seekAll(t);
+        //     if (!v.paused) playAll();
+        //   }
+        // });
+
       });
     });
   </script>
