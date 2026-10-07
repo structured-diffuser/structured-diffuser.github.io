@@ -134,25 +134,14 @@
       <blockquote class="content has-text-justified is-size-6 mt-5 abstract-blockquote"> 
         <!--is-size-5: font_size (smaller, the bigger), mt-5 : margin-->  
         <p>
-        We propose a novel hierarchical diffusion planner that embeds task and 
-        motion structure directly in the noise model. Unlike standard 
-        diffusion-based planners that use zero-mean, isotropic Gaussian noise, 
-        we employ a family of task-conditioned structured Gaussians whose means 
-        and covariances are derived from Gaussian Process Motion Planning (GPMP): 
-        sparse, task-centric key states or their associated timings (or both) 
-        are treated as noisy observations to produce a prior instance. 
-        We first generalize the standard diffusion process to biased, 
-        non-isotropic corruption with closed-form forward and posterior expressions. 
-        Building on this, our hierarchy separates prior instantiation from 
-        trajectory denoising: the upper level instantiates a task-conditioned 
-        structured Gaussian (mean and covariance), and the lower level denoises 
-        the full trajectory under that fixed prior. 
-        Experiments on Maze2D goal-reaching and KUKA block stacking show improved 
-        success rates, smoother trajectories, and stronger task alignment compared 
-        to isotropic baselines. Ablation studies indicate that explicitly structuring 
-        the corruption process offers benefits beyond simply conditioning the neural network. 
-        Overall, our method concentrates probability mass of prior near feasible, 
-        smooth, and semantically meaningful trajectories while maintaining tractability.
+        We propose Structured-Diffuser, a diffusion planner that embeds task and motion structure directly into the noise model. 
+Unlike standard diffusion-based planners that rely on zero-mean, isotropic Gaussian corruption, we introduce task-conditioned structured Gaussians whose means and covariances are derived from Gaussian Process Motion Planning (GPMP), explicitly encoding trajectory smoothness and task semantics in the prior. 
+We first formulate diffusion under a task-conditioned, non-isotropic Gaussian prior with closed-form forward and posterior expressions. Building on this formulation, our hierarchical design separates prior instantiation from trajectory denoising. 
+At the upper level, sparse task-centric key states and timings are obtained, which instantiate a structured Gaussian prior (mean and covariance). At the lower level, the full trajectory is denoised under this prior, treating the upper-level outputs as noisy observations. 
+Experiments across three motion-planning tasks show improved task success and training efficiency, with additional gains in data efficiency, trajectory smoothness, and position–velocity consistency where evaluated. 
+Ablation studies further show that explicitly structuring the corruption process provides benefits beyond neurally conditioning the denoising network alone. 
+Overall, our approach concentrates the prior’s probability mass around task-relevant, temporally structured trajectories.  
+We additionally demonstrate deployment on a physical G1 humanoid.
         </p>
       </blockquote>
 
